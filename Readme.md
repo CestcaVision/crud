@@ -1,11 +1,6 @@
----
-toc:
-  depth_from: 1
-  depth_to: 6
-  ordered: false
----
-
 # 用 express 和 mongodb 搭建 RESTFUL 接口
+
+[TOC]
 
 ## 搭建服务器
 
