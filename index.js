@@ -3,9 +3,10 @@ const db = require("./config/database");
 const bodyParser = require("body-parser");
 const app = express();
 const topRouter = require("./routes/topRouter");
+const userRouter = require("./routes/userRouter");
 
 app.use(bodyParser.json());
-app.use("/api", topRouter);
+app.use("/api", [topRouter, userRouter]);
 
 app.get("/", (req, res) => {
   res.send("hello");

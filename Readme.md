@@ -1,3 +1,10 @@
+---
+toc:
+  depth_from: 1
+  depth_to: 6
+  ordered: false
+---
+
 # 用 express 和 mongodb 搭建 RESTFUL 接口
 
 ## 搭建服务器
@@ -57,3 +64,12 @@ mongoose.Promise = global.Promise;
 - 入口文件里导入 router,用中间件设定新的接口,测试
 - 在 controller 里新建 topController.js 文件,在里面用增删改查方法对数据库进行操作，并返回 reponse
 - 导出对应方法，并在 router 里引用方法
+
+## 验证用户信息 签发 token
+
+- 新建 user 数据模型，userRouter,userController,并在路由里添加 post 方法 auth
+- 安装`brypt`,改写`增加条目`的方法，`bcrypt.hash()`给用户的密码加密
+- 在控制器中，书写 auth 方法，现在数据库中 findOne，看看有没有用户名，如果没有，`Promise.reject({ message: "没找到用户" })`
+- 如果有用户，用`brypt.compare(请求密码，数据库密码)`，看看是否相同
+- 如果相同，安装`jsonwebtoken`,定义 payload 和 secret，用`jwt.sign()`生成 token,并回复
+- 如果不同，回复`密码错误 未通过验证`
