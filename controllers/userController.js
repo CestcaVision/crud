@@ -38,8 +38,13 @@ const auth = (req, res) => {
     .catch(err => res.status(400).send(err));
 };
 
+const me = (req, res) => {
+  res.send(`hello!${req.decoded.username}`);
+};
+
 module.exports = {
   index,
   store,
-  auth
+  auth,
+  me
 };

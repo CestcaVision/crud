@@ -7,6 +7,7 @@
 - [为数据库写增删改查方法（测试）](#为数据库写增删改查方法测试)
 - [设置特定接口写增删改查](#设置特定接口写增删改查)
 - [验证用户信息 签发 token](#验证用户信息-签发-token)
+- [用中间件验证 get 请求里的 token](#用中间件验证-get-请求里的-token，核对后响应)
 
 ## 搭建服务器
 
@@ -74,3 +75,20 @@ mongoose.Promise = global.Promise;
 - 如果有用户，用`brypt.compare(请求密码，数据库密码)`，看看是否相同
 - 如果相同，安装`jsonwebtoken`,定义 payload 和 secret，用`jwt.sign()`生成 token,并回复
 - 如果不同，回复`密码错误 未通过验证`
+
+## 用中间件验证 get 请求里的 token，核对后响应
+
+- 新建中间件/middlewares/authenticate.js
+- 定义 authenticate 方法，三个参数 req,res,next
+- 接收 token,一般在请求头的特定字段里，比如`req.header('X-Access-Token')`
+- 判断 token 是否存在，如果不存在 返回 403 和错误信息
+- 如果 token 存在
+
+```javascript{.line-numbers}
+jwt.verify(token, secret, (err, decoded) => {
+  req.decoded = decoded; //decoded是之前设置的payload
+});
+```
+
+- 在 router 里定义一个路由， 接收 get 请求，请求后执行 authenticate 中间件，和 controller 里的方法
+- 在 controller 里可以定义响应方法，处理 req.decoded 的值
